@@ -3,7 +3,7 @@ package Ajoutepat;
 
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -14,23 +14,34 @@ import javax.swing.*;
  */
 public class Histocons extends JFrame{
  static Container c;
+ JTable area = null;
  JScrollPane listsc=new JScrollPane();
- TextArea area = new TextArea();
- String s;
- 
+ ArrayList<ArrayList<String>> s;
+ String [] s0 = {"id","Date","matricule med","nom med","num ss","nom pat","code medoc","libelle","indication","nbre de jours"};
     public Histocons(){
         this.setTitle ("liste des consultations");     
 this.setSize (800,700);
         c= this.getContentPane();
-        c.add(area);
         try {
         this.s = ConsultationService.getConsultations();
      } catch (SQLException ex) {
          Logger.getLogger(ListePat.class.getName()).log(Level.SEVERE, null, ex);
      }
-  area.setText(s);
-  area.setFont(new Font("Verdana", 1, 15));
-  area.setEditable(false);
+        try{
+        Object [][] temp0 = new Object[s.size()][];
+        for(int i = 0;i<temp0.length;i++){
+        temp0[i]=new Object[s.get(i).size()];
+        }
+        for(int i=0;i<s.size();i++){
+        for(int j=0;j<s.get(i).size();j++){
+        temp0[i][j]=s.get(i).get(j);
+        }
+        }
+  area = new JTable(temp0, s0);
+  c.add(area);
+        }
+        catch(Exception e){System.out.println(e.getMessage());}
+        
         
     
 }

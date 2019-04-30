@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  *manages all the database connections and operations with the table gestion.consultation
@@ -67,7 +70,7 @@ static void createConsultation(Consultation c){
 
 }
 
-static String getConsultations() throws SQLException{
+static ArrayList<ArrayList<String>> getConsultations() throws SQLException{
     Connection con = null;
     Statement teste = null;
 
@@ -89,8 +92,9 @@ ResultSet rs = null;
 
 } catch(SQLException ew){System.out.println("Erreur driver:  "+ew.getMessage ( ) ) ;}
       ResultSetMetaData rsmd =null;
-     
-     String s = "";
+     DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+     ArrayList<ArrayList<String>> s = new ArrayList<>(); 
+             ArrayList<String> temp = new ArrayList<>();
             try {
                
                 rsmd = rs.getMetaData();
@@ -102,46 +106,18 @@ ResultSet rs = null;
                 while(rs.next()){ 
                   
                     
-                    s+="consultation numéro ";
-                    s+=rs.getInt(1);
-                    s+="\n ";
-                    s+= rsmd.getColumnLabel(2);
-                    s+=" : ";
-                    s+=rs.getDate(2);
-                    s+=", ";
-                    s+= rsmd.getColumnLabel(3);
-                    s+=": ";
-                    s+=rs.getInt(3);
-                    s+=", ";
-                    s+= rsmd.getColumnLabel(4);
-                    s+=": ";
-                    s+=rs.getString(4);
-                    s+=", ";
-                    s+= rsmd.getColumnLabel(5);
-                    s+=": ";
-                    s+=rs.getInt(5);
-                    s+=", ";
-                    s+= rsmd.getColumnLabel(6);
-                    s+=": ";
-                    s+=rs.getString(6);
-                    s+=", ";
-                    s+= rsmd.getColumnLabel(7);
-                    s+=": ";
-                    s+=rs.getString(7);
-                    s+=", ";
-                    s+= rsmd.getColumnLabel(8);
-                    s+=": ";
-                    s+=rs.getString(8);
-                    s+=", "; 
-                    s+= rsmd.getColumnLabel(9);
-                    s+=": ";
-                    s+=rs.getString(9);
-                    s+=", ";
-                    s+= rsmd.getColumnLabel(10);
-                    s+=": ";
-                    s+=rs.getInt(10);
-                    s+=". ";
-                    s+= "\n";
+                    temp.add(Integer.toString(rs.getInt(1)));
+                    temp.add(dateFormat.format(rs.getDate(2)));
+                    temp.add(Integer.toString(rs.getInt(3)));
+                    temp.add(rs.getString(4));
+                    temp.add(Integer.toString(rs.getInt(5)));
+                    temp.add(rs.getString(6));
+                    temp.add(rs.getString(7));
+                    temp.add(rs.getString(8));
+                    temp.add(rs.getString(9));
+                    temp.add(Integer.toString(rs.getInt(10)));
+                    s.add(temp);
+                    temp.clear();
                 }
             } catch (SQLException ex) {
             }
